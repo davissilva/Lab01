@@ -3,6 +3,7 @@ import json
 from datetime import datetime as date
 from utils import headers, url
 
+today = date.utcnow()
 
 query = """
 query ultimaAtualizacao {
@@ -10,16 +11,12 @@ query ultimaAtualizacao {
     nodes {
       ... on Repository {
         nameWithOwner
-        latestRelease {
-          createdAt
-          isLatest
-        }
+        updatedAt
       }
     }
   }
 }
 """
-
 
 response = requests.post(url, headers=headers, json={"query": query})
 
@@ -29,8 +26,9 @@ if response.status_code == 200:
 
     for repository in repositories:
         name = repository["nameWithOwner"]
-        createdAt = repository["latestRelease"]["createdAt"].rstrip("Z")
-        createdAt = date.fromisoformat(createdAt)
-        hoje = date.now()
-        idade = hoje - createdAt
-        print(f"Repositório: {name} - Última Atualização: {createdAt} - Tempo decorrido: {idade}")
+        updated_at = repository["updatedAt"].rstrip("Z")
+        updated_at = date.fromisoformat(updated_at)
+        age = today - updated_at
+        print(
+            f"Repositório: {name} - Última Atualização: {updated_at} - Tempo decorrido: {age}"
+        )

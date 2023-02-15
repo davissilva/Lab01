@@ -1,8 +1,6 @@
 import requests
 import json
-from datetime import datetime as date
 from utils import headers, url
-
 
 query = """
 query totalPullRequestsAceitas {
@@ -19,7 +17,6 @@ query totalPullRequestsAceitas {
 }
 """
 
-
 response = requests.post(url, headers=headers, json={"query": query})
 
 if response.status_code == 200:
@@ -28,5 +25,5 @@ if response.status_code == 200:
 
     for repository in repositories:
         name = repository["nameWithOwner"]
-        pullRequests = repository["pullRequests"]["totalCount"]
-        print(f"Repositório: {name} - Pull Resquests aceitas: {pullRequests}")
+        pull_requests = repository["pullRequests"]["totalCount"]
+        print(f"Repositório: {name} - Pull Resquests aceitas: {pull_requests}")

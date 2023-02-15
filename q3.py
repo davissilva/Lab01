@@ -17,7 +17,6 @@ query LinguagemPrimaria {
 }
 """
 
-
 response = requests.post(url, headers=headers, json={"query": query})
 
 if response.status_code == 200:
@@ -26,6 +25,7 @@ if response.status_code == 200:
 
     for repository in repositories:
         name = repository["nameWithOwner"]
-        primaryLanguage = repository["primaryLanguage"]
-        language = primaryLanguage["name"] if primaryLanguage is not None else "none"
-        print(f"repositório: {name} - linguagem: {language}")
+        primary_language = repository["primaryLanguage"]
+        language = primary_language[
+            "name"] if primary_language is not None else "none"
+        print(f"Repositório: {name} - Linguagem: {language}")

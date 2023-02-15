@@ -27,4 +27,4 @@ if response.status_code == 200:
     for repository in repositories:
         name = repository["nameWithOwner"]
         releases = repository["releases"]["totalCount"]
-        print(f"repositório: {name} - releases: {releases}")
+        print(f"Repositório: {name} - Releases: {releases}")

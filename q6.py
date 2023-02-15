@@ -1,29 +1,17 @@
 import requests
 import json
-from datetime import datetime as date
 from utils import headers, url
 
-
 query = """
-query issuesFechadas {
+query razaoIssues {
   search(query: "stars:>100", type: REPOSITORY, first: 100) {
     nodes {
       ... on Repository {
-        name
-        issues(filterBy: {states: CLOSED}) {
+        nameWithOwner
+        closedIssues: issues(filterBy: {states: CLOSED}) {
           totalCount
         }
-      }
-    }
-  }
-}
-
-query totalIssues {
-  search(query: "stars:>100", type: REPOSITORY, first: 100) {
-    nodes {
-      ... on Repository {
-        name
-        issues {
+        totalIssues: issues{
           totalCount
         }
       }
@@ -31,7 +19,6 @@ query totalIssues {
   }
 }
 """
-
 
 response = requests.post(url, headers=headers, json={"query": query})
 
@@ -41,5 +28,9 @@ if response.status_code == 200:
 
     for repository in repositories:
         name = repository["nameWithOwner"]
-        pullRequests = repository[pullRequests]["totalCount"]
-        print(f"repositório: {name} - Pull Resquests: {pullRequests}")
+        closed_issues = repository["closedIssues"]["totalCount"]
+        total_issues = repository["totalIssues"]["totalCount"]
+        issues_ratio = closed_issues / total_issues if total_issues > 0 else 0
+        print(
+            f"Repositório: {name} - Issues fechadas: {closed_issues} - Issues total: {total_issues} - Razão de issues: {issues_ratio}"
+        )
