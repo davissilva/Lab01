@@ -1,3 +1,3 @@
 url = "https://api.github.com/graphql"
 
-headers = {"Authorization": "Bearer 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"}
+headers = {"Authorization": "Token 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"}
