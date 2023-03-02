@@ -30,7 +30,7 @@ query ($after: String) {
 client = GraphQLClient(url)
 client.inject_token(token=token)
 
-with open("dadosRepositorios1.csv", "w", newline="") as file:
+with open("dadosRepositorios.csv", "w", newline="") as file:
     writer = csv.writer(file)
     writer.writerow([
         "repository",
@@ -46,7 +46,7 @@ with open("dadosRepositorios1.csv", "w", newline="") as file:
         "issuesRatio",
     ])
 
-    for i in range(5):
+    for i in range(50):
         data = json.loads(client.execute(query=query, variables=variables))
         results = data["data"]["search"]
         end_cursor = results["pageInfo"]["endCursor"]
