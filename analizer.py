@@ -6,15 +6,20 @@ from datetime import datetime
 
 df = pd.read_csv('dadosRepositorios.csv')
 
-box_plotes = ['age', 'pullRequests', 'releases', 'issuesRatio']
+#conversão do tempo desde a ultima atualização
+df['hoursSinceUpdate'] = pd.to_timedelta(
+    df['daysSinceUpdate']).dt.components['hours']
+
+box_plotes = [
+    'age', 'pullRequests', 'releases', 'issuesRatio', 'hoursSinceUpdate'
+]
 
 sns.set(rc={'figure.figsize': (8, 10)})
 
-
-#Resposta RQ1, RQ2, RQ3
+#Resposta RQ1, RQ2, RQ3, RQ4 e RQ6
 for i in box_plotes:
-    median_age = df[i].median()
-    print('Mediana', i, ':', median_age)
+    median = df[i].median()
+    print('Mediana', i, ':', median)
     ax = sns.violinplot(data=df, y=i, width=0.6)
     sns.boxplot(data=df,
                 y=i,
@@ -26,21 +31,6 @@ for i in box_plotes:
     plt.show()
 
 sns.set(rc={'figure.figsize': (10, 10)})
-
-#Resposta RQ4
-df['updatedAt'] = pd.to_datetime(df['updatedAt'])
-df['daysSinceLastUpdate'] = (pd.Timestamp('now') - df['updatedAt']).dt.days
-median_age = df['daysSinceLastUpdate'].median()
-print('Mediana', 'daysSinceLastUpdate', ':', median_age)
-ax = sns.violinplot(data=df, y='daysSinceLastUpdate', width=0.6)
-sns.boxplot(data=df,
-                y='daysSinceLastUpdate',
-                width=0.1,
-                color='white',
-                boxprops={'zorder': 2},
-                ax=ax)
-plt.show()
-
 
 #Resposta RQ5
 top_rated_languages = [
@@ -61,15 +51,3 @@ for i, v in enumerate(languages['count']):
     plt.text(i, v, str(v), ha='center', va='bottom', fontweight='bold')
 
 plt.show()
-
-
-#Resposta RQ6
- 
-# plot
-# sns.violinplot(data=df,  y="issuesRatio")
-# plt.show()
-
-
-
-
-
