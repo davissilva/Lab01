@@ -1,14 +1,17 @@
+from typing import Type
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from datetime import datetime
 
 df = pd.read_csv('dadosRepositorios.csv')
 
-box_plotes = ['age', 'pullRequests', 'releases']
+box_plotes = ['age', 'pullRequests', 'releases', 'issuesRatio']
 
 sns.set(rc={'figure.figsize': (8, 10)})
 
-#resposta RQ1, RQ2, RQ3
+
+#Resposta RQ1, RQ2, RQ3
 for i in box_plotes:
     median_age = df[i].median()
     print('Mediana', i, ':', median_age)
@@ -24,7 +27,22 @@ for i in box_plotes:
 
 sns.set(rc={'figure.figsize': (10, 10)})
 
-#resposta RQ5
+#Resposta RQ4
+df['updatedAt'] = pd.to_datetime(df['updatedAt'])
+df['daysSinceLastUpdate'] = (pd.Timestamp('now') - df['updatedAt']).dt.days
+median_age = df['daysSinceLastUpdate'].median()
+print('Mediana', 'daysSinceLastUpdate', ':', median_age)
+ax = sns.violinplot(data=df, y='daysSinceLastUpdate', width=0.6)
+sns.boxplot(data=df,
+                y='daysSinceLastUpdate',
+                width=0.1,
+                color='white',
+                boxprops={'zorder': 2},
+                ax=ax)
+plt.show()
+
+
+#Resposta RQ5
 top_rated_languages = [
     'JavaScript', 'Python', 'Java', 'Typescript', 'C#', 'C++', 'PHP', 'Shell',
     'C', 'Ruby'
@@ -43,3 +61,15 @@ for i, v in enumerate(languages['count']):
     plt.text(i, v, str(v), ha='center', va='bottom', fontweight='bold')
 
 plt.show()
+
+
+#Resposta RQ6
+ 
+# plot
+# sns.violinplot(data=df,  y="issuesRatio")
+# plt.show()
+
+
+
+
+
