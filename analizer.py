@@ -19,7 +19,11 @@ sns.set(rc={'figure.figsize': (8, 10)})
 #Resposta RQ1, RQ2, RQ3, RQ4 e RQ6
 for i in box_plotes:
     median = df[i].median()
+    max_value = df[i].max()
+    min_value = df[i].min()
     print('Mediana', i, ':', median)
+    print('Maior', i, ':', max_value)
+    print('Menor', i, ':', min_value)
     ax = sns.violinplot(data=df, y=i, width=0.6)
     sns.boxplot(data=df,
                 y=i,
